@@ -2,7 +2,7 @@
 /*
 task=>熟练使用 ES6完成工具开发
 ###### 基本功能
-1. 对象、字符串、数字类型基本处理
+1. 对象(类数组)、字符串、数字类型基本处理 类型判断 扩展
 2. 日志输出
 3. 功能测试
 4. 
@@ -20,6 +20,10 @@ task=>熟练使用 ES6完成工具开发
 
 (function(window, undefined) {
     let utils = {};
+    let class2type = {};
+    "Boolean Number String Function Array Date RegExp Object Error".split(" ").forEach(function(name) {
+        class2type["[object " + name + "]"] = name.toLowerCase();
+    });
     /*
         return：min~max
     */
@@ -36,14 +40,39 @@ task=>熟练使用 ES6完成工具开发
 
     //颜色
     utils.randomColor = function(color) {
-        let charCode = '0123456789abcdef';
-        if (color === undefined) color = '#';
-        color += charCode[Math.floor(Math.random() * 16)];
-        if (color.length == 7) {
-            return color;
-        } else {
-            return arguments.callee(color);
+            let charCode = '0123456789abcdef';
+            if (color === undefined) color = '#';
+            color += charCode[Math.floor(Math.random() * 16)];
+            if (color.length == 7) {
+                return color;
+            } else {
+                return arguments.callee(color);
+            }
         }
+        // 获取对象中某几个属性的值 以数组形式返回 object to arry
+    utils.obj2Arr = (obj = {}, keys = []) => {
+        // 类数组： [].slice.call(arrayLike); Array.from(arrayLike);
+
+
+        // 全返回
+        if (keys.length) {
+            keys = Object.keys(obj);
+        }
+        let res = [];
+        keys.forEach(function(key) {
+            res.push(obj[key]);
+        });
+        return res
+    }
+
+    utils.type = (obj) => {
+        if (obj == null) {
+            return obj + "";
+        }
+        toString = Object.prototype.toString;
+        return typeof obj === "object" || typeof obj === "function" ?
+            class2type[toString.call(obj)] || "object" :
+            typeof obj;
     }
 
     window.utils = utils;
