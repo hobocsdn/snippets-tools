@@ -55,13 +55,39 @@ click触发前提(当一个mousedown和一个mouseup都在这个元素上被检�
 2. mousedown-mouseup：点击事件
 
 #### 位置属性
-/*
+```
 target:
     {
         client / clientY：// 触摸点相对于浏览器窗口viewport的位置
         pageX / pageY：// 触摸点相对于页面的位置
         screenX /screenY：// 触摸点相对于屏幕的位置
-
     }
 元素占位:ele.getComputeStyle()
-*/
+```
+
+
+
+### 日志模块文档说明
+基于浏览器端的console的日志记录组件。支持如下特性：
+1. 日志级别设置；
+2. 异常提交到服务器；
+3. 提交环境信息；
+4. 日志Tag过滤器
+
+
+**配置(config)参数说明**
+- level:输出日志级别Level ,日志级别，error(4)、warn(3)、info(2)、log(1)、debug(0),级别越高，输出的日志越少。比如：当前级别如果是warn，则只输出error、warn的日志.默认值：debug;
+- tagFilter:进行日志筛选,正则表达式字符串.使用者可以通过在console控制台通过 log4web.config({tagFilter:"usersmodule"}) 配置值输出"usersmodule"tag的日志
+- postContextInfo:是否提交环境数据
+- postUrl:异常信息提交的服务器地址
+
+
+**上报数据统计(postData)**
+- browser.浏览器描述信息。返回字符串，格式：" Chrome,39.0.2171.95",逗号前表示浏览器类型，逗号后表示浏览器版号.
+- os.操作系统字符串。
+- referrer.document.referrer信息.
+- url.当前页面的url.
+- resolution.屏幕分辨率信息.返回格式："1920*1080",(window.screen对象获取）.
+- name.异常名称。
+- message.异常message。
+- stack.异常调用堆栈字符串

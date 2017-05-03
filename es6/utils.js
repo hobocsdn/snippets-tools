@@ -5,7 +5,7 @@ task=>熟练使用 ES6完成工具开发
 1. 对象(类数组)、字符串、数字类型基本处理 类型判断 扩展
 2. 日志输出
 3. 功能测试
-4. 
+4.
 
 #### 扩展工具
 1. 时间格式化 字符串的常见应用场景(驼峰转换)
@@ -52,8 +52,6 @@ task=>熟练使用 ES6完成工具开发
         // 获取对象中某几个属性的值 以数组形式返回 object to arry
     utils.obj2Arr = (obj = {}, keys = []) => {
         // 类数组： [].slice.call(arrayLike); Array.from(arrayLike);
-
-
         // 全返回
         if (keys.length) {
             keys = Object.keys(obj);
@@ -74,7 +72,46 @@ task=>熟练使用 ES6完成工具开发
             class2type[toString.call(obj)] || "object" :
             typeof obj;
     }
-
+    /*
+     * 对象数组排序
+     * @param {String} firstKey 优先排序
+     * @param {String} secondKey 次要排序(firstKey相等(包含undefined)
+     * @param {String} dataType 数据类型
+     * @param {Boolean} asc 升序
+     */
+    utils.sortBy = (opts)=>{
+        let firstKey = opts.firstKey;
+        let secondKey = opts.secondKey;
+        let dataType = opts.dataType;
+        let asc = opts.asc ? -1:1;
+        let comparer = function(a,b){
+            var av = a[firstKey];
+            var bv = b[firstKey];
+            if (av !== bv) {
+              if (av > bv || av === void 0) return 1;
+              if (av < bv || bv === void 0) return -1;
+            }
+            return asc*(a[secondKey] - b[secondKey]);
+        };
+        let dateComparer = function(a,b){
+            let d1 = new Date(a[firstKey]);
+            let d2 = new Date(b[firstKey]);
+            let dt1 = av.getTime();
+            let dt2 = bv.getTime();
+            if (dt1 === dt2 || (isNaN(dt1) && isNaN(dt2))) {
+              return asc*(a[secondKey] - b[secondKey]);
+            }else{
+              if (av > bv || av === void 0) return 1;
+              if (av < bv || bv === void 0) return -1;
+            }
+        };
+        let handlers = {
+            number:comparer,
+            string:comparer,
+            date:dateComparer
+        }
+        return handlers[dataType] || comparer;
+    }
     window.utils = utils;
 })(window, void 0);
 
