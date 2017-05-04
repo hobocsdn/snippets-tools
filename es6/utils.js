@@ -64,51 +64,51 @@ task=>熟练使用 ES6完成工具开发
     }
 
     utils.type = (obj) => {
-        if (obj == null) {
-            return obj + "";
+            if (obj == null) {
+                return obj + "";
+            }
+            toString = Object.prototype.toString;
+            return typeof obj === "object" || typeof obj === "function" ?
+                class2type[toString.call(obj)] || "object" :
+                typeof obj;
         }
-        toString = Object.prototype.toString;
-        return typeof obj === "object" || typeof obj === "function" ?
-            class2type[toString.call(obj)] || "object" :
-            typeof obj;
-    }
-    /*
-     * 对象数组排序
-     * @param {String} firstKey 优先排序
-     * @param {String} secondKey 次要排序(firstKey相等(包含undefined)
-     * @param {String} dataType 数据类型
-     * @param {Boolean} asc 升序
-     */
-    utils.sortBy = (opts)=>{
+        /*
+         * 对象数组排序
+         * @param {String} firstKey 优先排序
+         * @param {String} secondKey 次要排序(firstKey相等(包含undefined)
+         * @param {String} dataType 数据类型
+         * @param {Boolean} asc 升序
+         */
+    utils.sortBy = (opts) => {
         let firstKey = opts.firstKey;
         let secondKey = opts.secondKey;
         let dataType = opts.dataType;
-        let asc = opts.asc ? -1:1;
-        let comparer = function(a,b){
+        let asc = opts.asc ? -1 : 1;
+        let comparer = function(a, b) {
             var av = a[firstKey];
             var bv = b[firstKey];
             if (av !== bv) {
-              if (av > bv || av === void 0) return 1;
-              if (av < bv || bv === void 0) return -1;
+                if (av > bv || av === void 0) return 1;
+                if (av < bv || bv === void 0) return -1;
             }
-            return asc*(a[secondKey] - b[secondKey]);
+            return asc * (a[secondKey] - b[secondKey]);
         };
-        let dateComparer = function(a,b){
+        let dateComparer = function(a, b) {
             let d1 = new Date(a[firstKey]);
             let d2 = new Date(b[firstKey]);
             let dt1 = av.getTime();
             let dt2 = bv.getTime();
             if (dt1 === dt2 || (isNaN(dt1) && isNaN(dt2))) {
-              return asc*(a[secondKey] - b[secondKey]);
-            }else{
-              if (av > bv || av === void 0) return 1;
-              if (av < bv || bv === void 0) return -1;
+                return asc * (a[secondKey] - b[secondKey]);
+            } else {
+                if (av > bv || av === void 0) return 1;
+                if (av < bv || bv === void 0) return -1;
             }
         };
         let handlers = {
-            number:comparer,
-            string:comparer,
-            date:dateComparer
+            number: comparer,
+            string: comparer,
+            date: dateComparer
         }
         return handlers[dataType] || comparer;
     }
@@ -137,7 +137,7 @@ task=>熟练使用 ES6完成工具开发
             console.log(item.case+" success");
         }
     }
-    tesList = [{
+    let tesList = [{
         case: "random",
         fn: utils.random,
         args: [10, 5],
