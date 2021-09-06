@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="/node_modules/jquery/dist/jquery.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <script type="text/javascript" src="dist/util.js"></script>
+    <script type="text/javascript" src="dist/components.js"></script>
+</head>
+<style>
+    .demo{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top:0;
+        left: 0;
+    }
+
+</style>
+
+<body>
+    <div class="demo">
+        <div class="c1"></div>
+        <div class="c2"></div>
+    </div>
+    <div class="content1" style="display:none">
+        Chinese President Xi Jinping said on Thursday that China will unswervingly support the development of the country's private sector, and will continue to strengthen the public sector amid concerns over the development of private enterprise in China.
+        "We will create a sound legal environment and further improve the business environment for private companies," Xi said during a visit to China Zhongwang Holdings Limited in Northeast China's Liaoning Province on Thursday.
+        Xi pointed out that many of the country's reform efforts are aimed at further developing the private economy and urged private companies to have confidence.
+        "We will unswervingly develop the public sector and will unswervingly encourage, support, guide and protect the development of the private sector," Xi said.
+        "The Communist Party of China's policies are favorable to the development of private companies," Xi said. "Private enterprise owners should also spare no efforts in developing more first-rate products."
+        The president's comments come at a time when a debate on the relationship between the country's State-owned enterprises (SOEs) and private firms continues to gain traction among the public, leading to rising concerns over the fate of China's private sector.
+    </div>
+    <div class="content2" style="display:none">
+        腾讯体育10月1日讯 2018-19赛季NBA季前赛继续进行，勒布朗-詹姆斯迎来了湖人生涯的首秀。詹姆斯只打了上半场，出战15分19秒，贡献9分3篮板3助攻，湖人整体发挥不如掘金，最终以107-124不敌对手，无缘季前赛开门红。
+    </div>
+</body>
+<script type="text/javascript">
+    var Typewriter = components.Typewriter;
+    var content1 = document.querySelector(".content1").innerHTML;
+    var content2 = document.querySelector(".content2").innerHTML;
+    new Typewriter([{
+        $el: document.querySelector(".c1"),
+        content: content1
+    }, {
+        $el: document.querySelector(".c2"),
+        content: content2
+    }])
+</script>
+
+</html>

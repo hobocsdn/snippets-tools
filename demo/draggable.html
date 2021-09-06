@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="/node_modules/jquery/dist/jquery.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <script type="text/javascript" src="dist/util.js"></script>
+    <script type="text/javascript" src="dist/components.js"></script>
+</head>
+<style>
+    .drag-box{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 150px;
+        height: 150px;
+        padding: 0.5em;
+        border: 1px solid #ddd;
+        background: #ffffff;
+        color: #333333;
+        cursor: move;
+    }
+    .split-bar{
+        height: 5px;
+        border: 1px solid;
+        width: 100%;
+        position: absolute;
+        bottom: 50px;
+        cursor: row-resize;;
+    }
+</style>
+
+<body>
+    <div class="drag-box">
+        <p>drag me around</p>
+    </div>
+
+    <div class="split-bar">
+
+    </div>
+</body>
+<script type="text/javascript">
+    // 实现 jquery UI resizable/draggable/droppable/sorable
+    var Drag = components.Drag;
+    var $dragBox = $(".drag-box");
+    var dragBox = new Drag({
+        $el: $dragBox
+    });
+    var offset = {
+        top: 0,
+        left: 0
+    };
+
+    function updatePosition(data) {
+        $dragBox.css({
+            "left": offset.left + data.offsetX + "px",
+            "top": offset.top + data.offsetY + "px",
+        });
+    }
+    dragBox.on("drag_start", function(e, data) {
+        offset = $(".drag-box").position();
+    }).on("drag_update", function(e, data) {
+        updatePosition(data);
+    }).on("drag_complete", function(e, data) {
+        console.log(offset)
+        console.log(data.offsetX, "---------", data.offsetY)
+        updatePosition(data);
+    });
+
+    var $resizeBar = $(".split-bar");
+    var resizeBar = new Drag({
+        $el: $resizeBar
+    });
+    resizeBar.on("drag_start", function(e, data) {
+        splitOffset = $(".split-bar").position();
+    }).on("drag_update", function(e, data) {
+        $resizeBar.css({
+            "top": splitOffset.top + data.offsetY + "px",
+        });
+    }).on("drag_complete", function(e, data) {
+        $resizeBar.css({
+            "top": splitOffset.top + data.offsetY + "px",
+        });
+    });
+</script>
+
+</html>

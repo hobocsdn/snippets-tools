@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../node_modules/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="..//assets/js/mbg.js"></script>
+    <link rel="stylesheet" href="..//assets/css/main.css">
+    <script type="text/javascript" src="../dist/util.js"></script>
+    <script type="text/javascript" src="../dist/vm.js"></script>
+</head>
+<style>
+    body{
+        overflow: hidden;
+    }
+    .demo{
+        position: absolute;
+        z-index: 99;
+        width: 220px;
+        height: 100%;
+        top:0;
+        left: 0;
+        bottom: 0;
+        border-right: 1px solid #999999;
+    }
+    .demo-body{
+        height: 100%;
+    }
+    iframe{
+        border: none;
+        height: 100%;
+        width: calc(100% - 220px);
+        margin-left: 220px;
+    }
+
+</style>
+
+<body>
+    <div class="demo">
+        <div class="demo-header">
+        </div>
+        <div class="demo-body">
+            <!-- <div id="testVm">{{name}}</div> -->
+        </div>
+    </div>
+    <iframe class="iframe" src=""></iframe>
+</body>
+<script type="text/javascript">
+    var getHashData = function() {
+        var hash = window.location.hash;
+        if (hash) {
+            //remove #
+            hash = hash.substr(1);
+        }
+        if (!hash) {
+            hash = "";
+        }
+        var list = hash.split(",");
+        var data = {
+            id: list[0],
+            sub: list[1] || ""
+        };
+        return data;
+    };
+
+    var updateHash = function(id, sub) {
+        var hash = id;
+        if (sub) {
+            hash += "," + sub;
+        }
+        window.location.hash = hash;
+    };
+
+    var currentItem = null;
+    var showItem = function(rowData) {
+        var iframe = document.querySelector(".iframe");
+        var v = rowData.id || rowData.name;
+        if (v === currentItem) {
+            try {
+                iframe.contentDocument.location.reload();
+            } catch (e) {}
+            return;
+        }
+        currentItem = v;
+        var sub = getHashData().sub;
+        iframe.src = v + ".html#" + sub;
+        updateHash(v, sub);
+    };
+    var changeItem = function(index) {
+        var rowData = mbg.getRowItem(index);
+        if (!mbg.isRowSelectable(rowData)) {
+            if (rowData.tg_frozen) {
+                mbg.unsetSelectedRow();
+                showItem(rowData);
+            }
+            return;
+        }
+        mbg.setSelectedRow(index);
+        showItem(rowData);
+    };
+    var tg = window.mbg;
+    var MBG = tg.MBG;
+    var container = $(".demo-body");
+    var mbg = new MBG(container);
+
+    function render() {
+        mbg.setOption({
+            rowHeight: 32,
+            showHeader: false,
+            multiSelect: false
+        })
+        mbg.bind("onRenderStart", function() {
+            this.time_render_start = new Date();
+        }).bind("onRenderComplete", function() {
+            var id = getHashData().id;
+            if (!id) {
+                return;
+            }
+            var rowData = mbg.getRowItemBy({
+                id: id
+            });
+            this.scrollRowIntoView(rowData);
+            if (rowData) {
+                changeItem(rowData.tg_index);
+            }
+        });
+
+        mbg.bind("onClick", function(e, d) {
+            changeItem(d.row);
+        });
+
+        var data = {
+            columns: [{
+                id: "name",
+                name: "Name",
+                titleable: true,
+                width: 220
+            }],
+            rows: [{
+                name: "Demo",
+                subs: [{
+                    id: "list_group",
+                    name: "listGroup"
+                }, {
+                    id: "vm",
+                    name: "vm"
+                }, {
+                    id: "draggable",
+                    name: "Draggable"
+                }, {
+                    id: "typewriter",
+                    name: "Typewriter"
+                }]
+            }]
+        }
+
+        mbg.setData(data);
+        mbg.render();
+    }
+    render();
+</script>
+
+</html>

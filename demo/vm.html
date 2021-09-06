@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="/node_modules/jquery/dist/jquery.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <script type="text/javascript" src="dist/util.js"></script>
+    <script type="text/javascript" src="dist/vm.js"></script>
+</head>
+<style>
+    .demo{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top:0;
+        left: 0;
+    }
+
+</style>
+
+<body>
+    <div class="demo"></div>
+</body>
+<script type="text/javascript">
+    var ele = document.querySelector(".demo");
+    var app = new VM({
+        $el: ele,
+        data: function() {
+            return {
+                name: 'demo for component',
+                hash: "#abc"
+            }
+        },
+        watch: {
+            hash: function(newHash) {
+                showItem(newHash);
+            }
+        }
+    });
+
+    var log4j = new Util.log4j({
+        level: "warn"
+    });
+    log4j.log("log")
+    log4j.debug("debug")
+    log4j.info("info")
+    log4j.warn("warn")
+    log4j.error("error")
+    // 实现 jquery UI resizable/draggable/droppable/sorable
+</script>
+
+</html>
